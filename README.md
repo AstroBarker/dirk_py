@@ -1,2 +1,3 @@
-# irk_py
-Python 3.x test implementation of implicit runge kutta integrator
+# dirk_py (diagonally implicit Runge Kutta in python)
+Python 3.x test implementation of diagonally implicit runge kutta integrator.
+Based on Butcher form.
