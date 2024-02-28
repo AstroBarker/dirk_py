@@ -1,6 +1,10 @@
+#!/usr/bin/env python3
+
 """
 Class for IRK
 """
+
+import numpy as np
 
 
 class IRK:
@@ -20,11 +24,10 @@ class IRK:
     self.b_i = np.zeros(nStages)
     self.c_i = np.zeros(nStages)
 
-
     if nStages == 1 and tOrder == 1:
-      a[0, 0] = 1.0
-      b[0] = 1.0
-      c[0] = 1.0
+      self.a_ij[0, 0] = 1.0
+      self.b_i[0] = 1.0
+      self.c_i[0] = 1.0
 
   # End __init__
 
@@ -33,11 +36,16 @@ class IRK:
     print(f"nStages : {self.nStages}")
     print(f"tOrder  : {self.tOrder}")
     return ""
+
   # End __str__
 
   def compute_increment(self, f):
     """
-    Given IRk tableau and function f of du/dt = f(u), compute u^(n+1)
+    Given IRK tableau and rhs function f of du/dt = f(u), compute u^(n+1)
     """
-  
+
+    for i in range(self.nStages):
+      x = 0
+
+
 # End IRK
