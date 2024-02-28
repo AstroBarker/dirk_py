@@ -71,8 +71,7 @@ class Solvers:
     Anderson accelerated fixed point iteration
     """
 
-    # status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
-    status = RootFindStatus.Success
+    status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
     if status == RootFindStatus.Fail:
       raise ValueError(
         f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
