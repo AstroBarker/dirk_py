@@ -8,6 +8,13 @@ from enum import Enum
 
 
 class RootFindStatus(Enum):
+  """
+  Enum class for root find status
+  Values:
+    Success
+    Fail
+  """
+
   Success = 0
   Fail = 1
 

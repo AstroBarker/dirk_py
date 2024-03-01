@@ -22,7 +22,15 @@ def ans1(y):
 
 class DIRK:
   """
-  Class for DIRK solver
+  Class for diagonally implicit Runge Kutta (DIRK) solver.
+
+  Args:
+    nStages (int) : number of RK stages
+    tOrder (int) : convergence orger
+    dt (float) : timestep size
+
+  Main Methods:
+    update(func): evolves dy/dt = func in time
   """
 
   def __init__(self, nStages, tOrder, dt):
@@ -124,7 +132,7 @@ class DIRK:
     for i in range(self.nStages):
       self.U += self.dt * self.b_i[i] * f(self.U_s[i])
 
-  # End compute_increment_
+  # End updat_
 
   def evolve(self, f, t_end):
     """
