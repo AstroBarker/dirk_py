@@ -6,8 +6,6 @@ Solvers
 
 from enum import Enum
 
-import numpy as np
-
 
 class RootFindStatus(Enum):
   Success = 0
@@ -78,7 +76,8 @@ class Solvers:
     # TODO: implement bisection and drop into bisection if fail
 
     # residual
-    g = lambda x: func(x) - x
+    def g(x):
+      return func(x) - x
 
     n = 0
     error = 1.0

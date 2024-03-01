@@ -109,7 +109,9 @@ class DIRK:
 
     for i in range(self.nStages):
       # Solve u^(i) = dt a_ii f(u^(i))
-      def target(u): return self.dt * self.a_ij[i, i] * f(u)
+      def target(u):
+        return self.dt * self.a_ij[i, i] * f(u)
+
       self.U_s[i] = self.solver.fixed_point_aa(target, self.U, -10.0, 10.0)
 
       # increment u^(i) by other bits
