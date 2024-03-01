@@ -4,8 +4,6 @@
 Class for DIRK
 """
 
-import sys
-
 import numpy as np
 from solvers import Solvers
 
@@ -97,7 +95,7 @@ class DIRK:
   # End __init__
 
   def __str__(self):
-    print(f"Implicit RK method: ")
+    print("Implicit RK method: ")
     print(f"nStages : {self.nStages}")
     print(f"tOrder  : {self.tOrder}")
     return ""
@@ -111,7 +109,7 @@ class DIRK:
 
     for i in range(self.nStages):
       # Solve u^(i) = dt a_ii f(u^(i))
-      target = lambda u: self.dt * self.a_ij[i, i] * f(u)
+      def target(u): return self.dt * self.a_ij[i, i] * f(u)
       self.U_s[i] = self.solver.fixed_point_aa(target, self.U, -10.0, 10.0)
 
       # increment u^(i) by other bits
