@@ -89,6 +89,7 @@ class DIRK:
     self.U = 1.0
     self.U_s = np.zeros(nStages)  # stage storage
     self.sol = [1.0]  # solution at timesteps
+    self.time = [0.0]  # solution at timesteps
 
     # solver
     max_iters = 100
@@ -135,6 +136,8 @@ class DIRK:
     """
     t = 0.0
     step = 0
+    self.sol = [1.0]  # reset sol
+    self.time = [0.0]  # reset time
     while t < t_end:
       if t + dt > t_end:
         dt = t_end - t
@@ -144,6 +147,7 @@ class DIRK:
       step += 1
 
       t += dt
+      self.time.append(t)
 
   # End evolve
 
@@ -152,10 +156,10 @@ class DIRK:
 if __name__ == "__main__":
   # main
 
-  dirk = DIRK(4, 3)
+  dirk = DIRK(3, 3)
 
-  t_end = 5.0
-  dt = 0.01
+  t_end = 2.0
+  dt = 0.10
   dirk.evolve(func1, t_end, dt)
   print(dirk.U)
   print(ans1(t_end))
