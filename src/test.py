@@ -5,6 +5,7 @@ import os
 import numpy as np
 
 from solvers import Solvers
+from dirk import DIRK, func1, ans1
 
 
 def func_fp(x):
@@ -54,6 +55,19 @@ def test_fp_aa():
   ANS = 0.739085133215160641
 
   assert abs(my_ans - ANS) < fptol, f"Root must be within {fptol}"
+
+
+# End test_fp_aa
+
+
+def test_dirk22():
+  dirk = DIRK(2, 2, 0.1)
+  dirk.evolve(func1, 1.0)
+
+  answer = ans1(1.0)
+  TOL = 1.0e-4
+
+  assert abs(dirk.U - answer) <= TOL, f"Answer must be within {TOL}"
 
 
 if __name__ == "__main__":
