@@ -27,18 +27,14 @@ class DIRK:
   Args:
     nStages (int) : number of RK stages
     tOrder (int) : convergence orger
-    dt (float) : timestep size
 
   Main Methods:
     update(func): evolves dy/dt = func in time
   """
 
-  def __init__(self, nStages, tOrder, dt):
-    assert dt > 0.0, "dt must be > 0.0"
-
+  def __init__(self, nStages, tOrder):
     self.nStages = nStages
     self.tOrder = tOrder
-    self.dt = dt
 
     # setup tableau
 
@@ -110,7 +106,7 @@ class DIRK:
 
   # End __str__
 
-  def update_(self, f):
+  def update_(self, f, dt):
     """
     Given DIRK tableau and rhs function f of du/dt = f(u), compute u^(n+1)
     """
@@ -118,36 +114,36 @@ class DIRK:
     for i in range(self.nStages):
       # Solve u^(i) = dt a_ii f(u^(i))
       def target(u):
-        return self.dt * self.a_ij[i, i] * f(u)
+        return dt * self.a_ij[i, i] * f(u)
 
       self.U_s[i] = self.solver.fixed_point_aa(target, self.U, -10.0, 10.0)
 
       # increment u^(i) by other bits
       for j in range(i):
         # print(i, " ", j)
-        self.U_s[i] += self.dt * self.a_ij[i, j] * f(self.U_s[j])
+        self.U_s[i] += dt * self.a_ij[i, j] * f(self.U_s[j])
       self.U_s[i] += self.U
 
     # u^(n+1) from the stages
     for i in range(self.nStages):
-      self.U += self.dt * self.b_i[i] * f(self.U_s[i])
+      self.U += dt * self.b_i[i] * f(self.U_s[i])
 
   # End updat_
 
-  def evolve(self, f, t_end):
+  def evolve(self, f, t_end, dt):
     """
     timestepper
     """
     t = 0.0
     step = 0
     while t < t_end:
-      if t + self.dt > t_end:
-        self.dt = t_end - t
+      if t + dt > t_end:
+        dt = t_end - t
 
-      self.update_(f)
+      self.update_(f, dt)
       step += 1
 
-      t += self.dt
+      t += dt
 
   # End evolve
 
@@ -156,8 +152,11 @@ class DIRK:
 if __name__ == "__main__":
   # main
 
-  dirk = DIRK(1, 1, 0.1)
-  dirk.evolve(func1, 1.0)
+  dirk = DIRK(4, 3)
+
+  t_end = 5.0
+  dt = 0.01
+  dirk.evolve(func1, t_end, dt)
   print(dirk.U)
-  print(ans1(1.0))
+  print(ans1(t_end))
 # End __main__
