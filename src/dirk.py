@@ -9,22 +9,15 @@ from solvers import Solvers
 
 
 def func1(y):
-  return -15.0 * y
+  return 2.0 * y
 
 
 def dfunc1(y):
-  return -15.0
+  return
 
 
-def ans1(y):
-  return np.exp(-15.0 * y)
-
-
-def L2(data, theory):
-  """
-  L2 norm
-  """
-  return abs(data - theory)
+def ans1(t):
+  return np.exp(2.0 * t)
 
 
 class DIRK:
@@ -120,16 +113,15 @@ class DIRK:
 
     for i in range(self.nStages):
       # Solve u^(i) = dt a_ii f(u^(i))
-      def target(u):
-        return dt * self.a_ij[i, i] * f(u)
-
-      self.U_s[i] = self.solver.fixed_point_aa(target, self.U, -10.0, 10.0)
-
-      # increment u^(i) by other bits
+      sum_im1 = 0.0
       for j in range(i):
-        # print(i, " ", j)
-        self.U_s[i] += dt * self.a_ij[i, j] * f(self.U_s[j])
-      self.U_s[i] += self.U
+        sum_im1 += dt * self.a_ij[i, j] * f(self.U_s[j])
+      sum_im1 += self.U
+
+      def target(u):
+        return sum_im1 + dt * self.a_ij[i, i] * f(u)
+
+      self.U_s[i] = self.solver.fixed_point_aa(target, self.U)
 
     # u^(n+1) from the stages
     for i in range(self.nStages):
@@ -164,12 +156,11 @@ class DIRK:
 if __name__ == "__main__":
   # main
 
-  dirk = DIRK(1, 1)
+  dirk = DIRK(4, 3)
 
-  t_end = 2.0
   dt = 1.0e-2
+  t_end = 2.0
   dirk.evolve(func1, t_end, dt)
   print(dirk.U)
   print(ans1(t_end))
-  print(L2(dirk.sol[-1], ans1(np.array(dirk.time[-1]))))
 # End __main__

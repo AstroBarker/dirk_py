@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from dirk import DIRK
 
-dt = np.array([1e-5, 1e-4, 1e-3, 1e-2])
+dt = np.array([1e-5, 1e-4, 1e-3, 1e-2, 1e-1])
 
 
 def func1(y):
@@ -20,7 +20,7 @@ def L2(data, theory):
   """
   L2 norm
   """
-  return abs(data - theory)  # / len(data)
+  return np.sum(np.power(data - theory, 2.0)) / len(data)
 
 
 def convergence(mydirk):
@@ -29,16 +29,12 @@ def convergence(mydirk):
   """
 
   t_end = 2.0
-  # dt = np.array([1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1])
-  # dt = np.array([1e-4, 1e-3, 1e-2])
   error = np.zeros(len(dt))
 
   for i in range(len(dt)):
-    # print(dt[i])
     mydirk.evolve(func1, t_end, dt[i])
     theory = ans1(np.array(mydirk.time))
-    error[i] = L2(mydirk.sol[-1], theory[-1])
-  print(f"{dt}, {error}")
+    error[i] = L2(mydirk.sol, theory)
   return error
 
 
@@ -60,7 +56,7 @@ def main():
 
   fig, ax = plt.subplots()
 
-  ax.loglog(dt, error11, color="teal", label="DIRK(1,1)", ls=" ", marker="o")
+  ax.loglog(dt, error11, color="teal", label="DIRK(1,1)", ls=" ", marker="x")
 
   ax.loglog(dt, error22, color="#400080", label="DIRK(2,2)", ls=" ", marker="o")
   ax.loglog(dt, error33, color="#800000", label="DIRK(3,3)", ls=" ", marker="o")

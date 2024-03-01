@@ -42,17 +42,19 @@ class Solvers:
 
   # End check_bracket_
 
-  def fixed_point(self, func, x0, a, b):
+  def fixed_point(self, func, x0, a=None, b=None):
     """
     Classical fixed point iteration
     """
 
-    status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
-    if status == RootFindStatus.Fail:
-      raise ValueError(
-        f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
-      )
-    # TODO: implement bisection and drop into bisection if fail
+    status = None
+    if a is not None and b is not None:
+      status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
+      if status == RootFindStatus.Fail:
+        raise ValueError(
+          f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
+        )
+      # TODO: implement bisection and drop into bisection if fail
 
     n = 0
     error = 1.0
@@ -70,17 +72,18 @@ class Solvers:
 
   # End fixed_point
 
-  def fixed_point_aa(self, func, x0, a, b):
+  def fixed_point_aa(self, func, x0, a=None, b=None):
     """
     Anderson accelerated fixed point iteration
     """
-
-    status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
-    if status == RootFindStatus.Fail:
-      raise ValueError(
-        f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
-      )
-    # TODO: implement bisection and drop into bisection if fail
+    status = None
+    if a is not None and b is not None:
+      status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
+      if status == RootFindStatus.Fail:
+        raise ValueError(
+          f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
+        )
+      # TODO: implement bisection and drop into bisection if fail
 
     # residual
     def g(x):
@@ -103,20 +106,24 @@ class Solvers:
 
       if n == self.maxiters:
         print(" ! Not converged!")
+    # print(f"{n}, {error}")
     return xk
 
   # End fixed_point_aa
 
-  def newton(self, func, dfunc, x0, a, b):
+  def newton(self, func, dfunc, x0, a=None, b=None):
     """
     Newton-Raphson iteration
     """
-    status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
-    if status == RootFindStatus.Fail:
-      raise ValueError(
-        f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
-      )
-    # TODO: implement bisection and drop into bisection if fail
+
+    status = None
+    if a is not None and b is not None:
+      status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
+      if status == RootFindStatus.Fail:
+        raise ValueError(
+          f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
+        )
+      # TODO: implement bisection and drop into bisection if fail
 
     n = 0
     h = func(x0) / dfunc(x0)
@@ -130,20 +137,23 @@ class Solvers:
 
       if n == self.maxiters:
         print(" ! Not converged!")
+    # print(f"{n}, {error}")
     return x0
 
   # End newton
 
-  def newton_aa(self, func, dfunc, x0, a, b):
+  def newton_aa(self, func, dfunc, x0, a=None, b=None):
     """
     Anderson accelerated Newton-Raphson iteration
     """
-    status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
-    if status == RootFindStatus.Fail:
-      raise ValueError(
-        f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
-      )
-    # TODO: implement bisection and drop into bisection if fail
+    status = None
+    if a is not None and b is not None:
+      status = self.check_bracket_(a, b, func(a) - a, func(b) - b)
+      if status == RootFindStatus.Fail:
+        raise ValueError(
+          f"No root in bracket! a, b, fa, fb = {a}, {b}, {func(a)}, {func(b)}"
+        )
+      # TODO: implement bisection and drop into bisection if fail
 
     n = 0
     h = func(x0) / dfunc(x0)
@@ -167,6 +177,7 @@ class Solvers:
       n += 1
       if n == self.maxiters:
         print(" ! Not converged!")
+    print(f"{n}, {error}")
     return xk
 
   # End newton_aa
