@@ -88,6 +88,7 @@ class DIRK:
     # storage
     self.U = 1.0
     self.U_s = np.zeros(nStages)  # stage storage
+    self.sol = [1.0]  # solution at timesteps
 
     # solver
     max_iters = 100
@@ -139,6 +140,7 @@ class DIRK:
         dt = t_end - t
 
       self.update_(f, dt)
+      self.sol.append(self.U)
       step += 1
 
       t += dt
