@@ -14,6 +14,10 @@ def func1(y):
   return -15.0 * y
 
 
+def dfunc1():
+  return -15.0
+
+
 def ans1(y):
   return np.exp(-15.0 * y)
 
@@ -36,9 +40,10 @@ class DIRK:
     self.b_i = np.zeros(nStages)
     self.c_i = np.zeros(nStages)
 
+    # Backward Euler tableau
     if nStages == 1 and tOrder == 1:
       self.a_ij[0, 0] = 1.0
-      self.b_i[0] = 0.0  # hack
+      self.b_i[0] = 1.0
       self.c_i[0] = 1.0
 
     # L-stable
@@ -84,8 +89,7 @@ class DIRK:
     self.U = 1.0
     self.U_s = np.zeros(nStages)  # stage storage
 
-    # hack: solver
-
+    # solver
     max_iters = 100
     fptol = 1.0e-15
     self.solver = Solvers(max_iters, fptol)
@@ -100,50 +104,52 @@ class DIRK:
 
   # End __str__
 
-  def compute_increment_(self, f):
+  def update_(self, f):
     """
-    Given IRK tableau and rhs function f of du/dt = f(u), compute u^(n+1)
+    Given DIRK tableau and rhs function f of du/dt = f(u), compute u^(n+1)
     """
-
-    self.U_s[0] = self.U
 
     for i in range(self.nStages):
-      target = lambda u: self.dt * self.a_ij[i, i] * f(self.U_s[i])
+      # Solve u^(i) = dt a_ii f(u^(i))
+      target = lambda u: self.dt * self.a_ij[i, i] * f(u)
       self.U_s[i] = self.solver.fixed_point_aa(target, self.U, -10.0, 10.0)
-      # print(self.U_s[i])
-      # sys.exit()
 
-      # u^(i)
+      # increment u^(i) by other bits
       for j in range(i):
         # print(i, " ", j)
         self.U_s[i] += self.dt * self.a_ij[i, j] * f(self.U_s[j])
       self.U_s[i] += self.U
 
-    # u^(n+1)
+    # u^(n+1) from the stages
     for i in range(self.nStages):
       self.U += self.dt * self.b_i[i] * f(self.U_s[i])
 
   # End compute_increment_
 
   def evolve(self, f, t_end):
+    """
+    timestepper
+    """
     t = 0.0
     step = 0
     while t < t_end:
       if t + self.dt > t_end:
         self.dt = t_end - t
 
-      self.compute_increment_(f)
+      self.update_(f)
       step += 1
 
       t += self.dt
 
+  # End evolve
 
-# End IRK
+
+# End DIRK
 if __name__ == "__main__":
   # main
-  x = 0.0
 
-  dirk = DIRK(4, 3, 0.05)
+  dirk = DIRK(1, 1, 0.1)
   dirk.evolve(func1, 1.0)
   print(dirk.U)
   print(ans1(1.0))
+# End __main__
