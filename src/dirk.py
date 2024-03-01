@@ -12,12 +12,19 @@ def func1(y):
   return -15.0 * y
 
 
-def dfunc1():
+def dfunc1(y):
   return -15.0
 
 
 def ans1(y):
   return np.exp(-15.0 * y)
+
+
+def L2(data, theory):
+  """
+  L2 norm
+  """
+  return abs(data - theory)
 
 
 class DIRK:
@@ -138,6 +145,7 @@ class DIRK:
     step = 0
     self.sol = [1.0]  # reset sol
     self.time = [0.0]  # reset time
+    self.U = 1.0  # reset for convergence
     while t < t_end:
       if t + dt > t_end:
         dt = t_end - t
@@ -156,11 +164,12 @@ class DIRK:
 if __name__ == "__main__":
   # main
 
-  dirk = DIRK(3, 3)
+  dirk = DIRK(1, 1)
 
   t_end = 2.0
-  dt = 0.10
+  dt = 1.0e-2
   dirk.evolve(func1, t_end, dt)
   print(dirk.U)
   print(ans1(t_end))
+  print(L2(dirk.sol[-1], ans1(np.array(dirk.time[-1]))))
 # End __main__
