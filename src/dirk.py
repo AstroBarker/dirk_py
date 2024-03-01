@@ -40,13 +40,11 @@ class DIRK:
 
     self.a_ij = np.zeros((nStages, nStages))
     self.b_i = np.zeros(nStages)
-    self.c_i = np.zeros(nStages)
 
     # Backward Euler tableau
     if nStages == 1 and tOrder == 1:
       self.a_ij[0, 0] = 1.0
       self.b_i[0] = 1.0
-      self.c_i[0] = 1.0
 
     # L-stable
     if nStages == 2 and tOrder == 2:
