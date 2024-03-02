@@ -9,15 +9,15 @@ from solvers import Solvers
 
 
 def func1(y):
-  return 2.0 * y
+  return -15.0 * y
 
 
 def dfunc1(y):
-  return
+  return -15.0
 
 
 def ans1(t):
-  return np.exp(2.0 * t)
+  return np.exp(-15.0 * t)
 
 
 class DIRK:

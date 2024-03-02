@@ -109,8 +109,8 @@ def test_newton_aa():
 
 
 def test_dirk22():
-  dirk = DIRK(2, 2, 0.1)
-  dirk.evolve(func1, 1.0)
+  dirk = DIRK(2, 2)
+  dirk.evolve(func1, 1.0, 0.1)
 
   answer = ans1(1.0)
   TOL = 1.0e-4
