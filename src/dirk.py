@@ -9,7 +9,7 @@ from solvers import Solvers
 
 
 def func1(y):
-  return -15.0 * y
+  return 2.0 * y
 
 
 def dfunc1(y):
@@ -17,7 +17,7 @@ def dfunc1(y):
 
 
 def ans1(t):
-  return np.exp(-15.0 * t)
+  return np.exp(2.0 * t)
 
 
 class DIRK:
@@ -84,6 +84,20 @@ class DIRK:
       self.b_i[1] = -1.5
       self.b_i[2] = 0.5
       self.b_i[3] = 0.5
+
+    if nStages == 3 and tOrder == 4:
+      x = 1.06858
+      self.a_ij[0, 0] = x
+      self.a_ij[1, 0] = 0.5 - x
+      self.a_ij[2, 0] = 2.0 * x
+      self.a_ij[1, 1] = x
+      self.a_ij[2, 1] = 1.0 - 4.0 * x
+      self.a_ij[2, 2] = x
+      self.b_i[0] = 1.0 / (6.0 * (1.0 - 2.0 * x) ** 2.0)
+      self.b_i[1] = (3.0 * (1.0 - 2.0 * x) ** 2 - 1.0) / (
+        3.0 * (1.0 - 2.0 * x) ** 2.0
+      )
+      self.b_i[2] = 1.0 / (6.0 * (1.0 - 2.0 * x) ** 2.0)
 
     # storage
     self.U = 1.0
@@ -156,10 +170,11 @@ class DIRK:
 if __name__ == "__main__":
   # main
 
-  dirk = DIRK(4, 3)
+  dirk = DIRK(2, 2)  #
+  # dirk = DIRK(1, 1)
 
-  dt = 1.0e-2
-  t_end = 2.0
+  dt = 1.0e-4
+  t_end = 1.0
   dirk.evolve(func1, t_end, dt)
   print(dirk.U)
   print(ans1(t_end))
