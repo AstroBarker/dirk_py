@@ -53,9 +53,6 @@ def main():
   dirk33 = DIRK(3, 3)
   error33 = convergence(dirk33)
 
-  dirk43 = DIRK(4, 3)
-  error43 = convergence(dirk43)
-
   fig, ax = plt.subplots()
 
   slope, intercept, r, p, se = stats.linregress(np.log10(dt), np.log10(error11))

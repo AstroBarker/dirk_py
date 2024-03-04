@@ -72,7 +72,6 @@ def radius_absolute_monotonicity(A, b, c):
 
 
 def main():
-  x = 0.0
   alpha = np.zeros((3, 2))
   alpha[1, 0] = 1.0
   alpha[2, 1] = 1.0
@@ -83,7 +82,6 @@ def main():
   beta[2, 1] = 1.0 / 4.0
 
   A, b, c = shuosher_to_butcher(alpha, beta)
-  r = radius_absolute_monotonicity(A, b, c)
   (
     v,
     alpha2,
