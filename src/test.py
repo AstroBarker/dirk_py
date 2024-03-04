@@ -3,7 +3,15 @@
 import numpy as np
 
 from solvers import Solvers
-from dirk import DIRK, func1, ans1
+from dirk import DIRK
+
+
+def func1(y):
+  return -15.0 * y
+
+
+def ans1(y):
+  return np.exp(-15 * y)
 
 
 def func_fp(x):

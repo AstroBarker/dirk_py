@@ -59,27 +59,64 @@ def main():
   fig, ax = plt.subplots()
 
   slope, intercept, r, p, se = stats.linregress(np.log10(dt), np.log10(error11))
-  ax.plot(np.log10(dt), np.log10(error11), color="teal", label="DIRK(1,1)", ls=" ", marker="x")
-  #ax.loglog(dt, slope*dt+intercept, color="teal")
-  #ax.loglog(dt, 1.0 * error11, color="teal")
-  ax.plot(np.log10(dt), slope * np.log10(dt) + intercept, color="teal", label=f"DIRK(1,1): {slope:.3f}")
+  ax.plot(
+    np.log10(dt),
+    np.log10(error11),
+    color="teal",
+    label="DIRK(1,1)",
+    ls=" ",
+    marker="x",
+  )
+  # ax.loglog(dt, slope*dt+intercept, color="teal")
+  # ax.loglog(dt, 1.0 * error11, color="teal")
+  ax.plot(
+    np.log10(dt),
+    slope * np.log10(dt) + intercept,
+    color="teal",
+    label=f"DIRK(1,1): {slope:.3f}",
+  )
 
   slope, intercept, r, p, se = stats.linregress(np.log10(dt), np.log10(error22))
-  ax.plot(np.log10(dt), np.log10(error22), color="#400080", label="DIRK(2,2)", ls=" ", marker="x")
-  ax.plot(np.log10(dt), slope * np.log10(dt) + intercept, color="#400080", label=f"DIRK(2,2): {slope:.3f}")
+  ax.plot(
+    np.log10(dt),
+    np.log10(error22),
+    color="#400080",
+    label="DIRK(2,2)",
+    ls=" ",
+    marker="x",
+  )
+  ax.plot(
+    np.log10(dt),
+    slope * np.log10(dt) + intercept,
+    color="#400080",
+    label=f"DIRK(2,2): {slope:.3f}",
+  )
 
   slope, intercept, r, p, se = stats.linregress(np.log10(dt), np.log10(error33))
-  ax.plot(np.log10(dt), np.log10(error33), color="#800000", label="DIRK(3,3)", ls=" ", marker="x")
-  ax.plot(np.log10(dt), slope * np.log10(dt) + intercept, color="#800000", label=f"DIRK(3,3): {slope:.3f}")
+  ax.plot(
+    np.log10(dt),
+    np.log10(error33),
+    color="#800000",
+    label="DIRK(3,3)",
+    ls=" ",
+    marker="x",
+  )
+  ax.plot(
+    np.log10(dt),
+    slope * np.log10(dt) + intercept,
+    color="#800000",
+    label=f"DIRK(3,3): {slope:.3f}",
+  )
 
-  #slope, intercept, r, p, se = stats.linregress(np.log10(dt), np.log10(error43))
-  #ax.plot(np.log10(dt), np.log10(error43), color="#408000", label="DIRK(4,3)", ls=" ", marker="x")
-  #ax.plot(np.log10(dt), slope * np.log10(dt) + intercept, color="#408000", label=f"DIRK(4,3): {slope:.3f}")
+  # slope, intercept, r, p, se = stats.linregress(np.log10(dt), np.log10(error43))
+  # ax.plot(np.log10(dt), np.log10(error43), color="#408000", label="DIRK(4,3)", ls=" ", marker="x")
+  # ax.plot(np.log10(dt), slope * np.log10(dt) + intercept, color="#408000", label=f"DIRK(4,3): {slope:.3f}")
 
   ax.legend(frameon=True)
   ax.set(xlabel=r"log$_{10}(dt)$", ylabel=r"log$_{10}$(L$_{2})$")
 
   plt.savefig("convergence.png")
+
 
 # End main
 
